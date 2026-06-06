@@ -1,42 +1,39 @@
+import doctors from "@/data/doctors";
+import DoctorCard from "@/components/DoctorCard";
+
 export default function Home() {
   return (
     <div className="min-h-screen bg-base-200">
-      
-      {/* HERO SECTION */}
-      <div className="hero min-h-[70vh] bg-base-100">
+
+      {/* HERO */}
+      <div className="hero min-h-[60vh] bg-base-100">
         <div className="hero-content text-center">
-          <div className="max-w-md">
+          <div className="max-w-xl">
             <h1 className="text-5xl font-bold">
-              Find Your Doctor Easily
+              Find & Book Your Doctor
             </h1>
 
             <p className="py-6">
-              Book appointments with top doctors in Bangladesh.
-              Fast, secure and easy management system.
+              Smart doctor appointment system with fast booking and secure management.
             </p>
 
             <button className="btn btn-primary">
-              Get Started
+              Book Now
             </button>
           </div>
         </div>
       </div>
 
-      {/* FEATURE SECTION */}
-      <div className="grid md:grid-cols-3 gap-6 p-10">
-        <div className="card bg-base-100 shadow-xl p-6">
-          <h2 className="text-xl font-bold">Top Doctors</h2>
-          <p>Find highly rated specialists.</p>
-        </div>
+      {/* TOP DOCTORS */}
+      <div className="p-10">
+        <h2 className="text-3xl font-bold mb-6 text-center">
+          Top Rated Doctors
+        </h2>
 
-        <div className="card bg-base-100 shadow-xl p-6">
-          <h2 className="text-xl font-bold">Easy Booking</h2>
-          <p>Book appointment in 1 click.</p>
-        </div>
-
-        <div className="card bg-base-100 shadow-xl p-6">
-          <h2 className="text-xl font-bold">Secure System</h2>
-          <p>Your data is safe with JWT auth.</p>
+        <div className="grid md:grid-cols-3 gap-6">
+          {doctors.map((doc) => (
+            <DoctorCard key={doc.id} doctor={doc} />
+          ))}
         </div>
       </div>
 
