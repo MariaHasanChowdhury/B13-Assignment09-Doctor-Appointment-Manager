@@ -33,11 +33,11 @@ export default function TopDoctors() {
         </h2>
 
         <p className="text-gray-500 mt-3">
-          Find and book appointments with the best doctors in town.
+          Find and book appointments with experienced specialists.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {doctors.map((doctor) => (
           <DoctorCard
             key={doctor._id}
