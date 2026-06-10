@@ -12,7 +12,9 @@ async function getDoctor(id) {
   }
 }
 
-export default async function DoctorDetails({ params }) {
+export default async function DoctorDetails({
+  params,
+}) {
   const doctor = await getDoctor(params.id);
 
   if (!doctor) {
@@ -32,16 +34,16 @@ export default async function DoctorDetails({ params }) {
           <img
             src={doctor.image}
             alt={doctor.name}
-            className="w-full rounded-xl shadow-lg"
+            className="w-full rounded-2xl shadow-lg"
           />
         </div>
 
         <div>
-          <h1 className="text-4xl font-bold mb-4">
+          <h1 className="text-4xl font-bold mb-3">
             {doctor.name}
           </h1>
 
-          <p className="text-xl text-primary mb-4">
+          <p className="text-xl text-primary font-semibold mb-4">
             {doctor.specialty}
           </p>
 
@@ -61,8 +63,8 @@ export default async function DoctorDetails({ params }) {
           </p>
 
           <p className="mb-2">
-            <strong>Consultation Fee:</strong> ৳
-            {doctor.fee}
+            <strong>Consultation Fee:</strong>{" "}
+            ৳{doctor.fee}
           </p>
 
           <p className="mb-4">
@@ -75,11 +77,11 @@ export default async function DoctorDetails({ params }) {
           </p>
 
           <div className="mb-6">
-            <h3 className="font-bold text-lg mb-2">
+            <h3 className="font-bold text-lg mb-3">
               Available Time Slots
             </h3>
 
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-3">
               {doctor.availability?.map(
                 (slot, index) => (
                   <span
@@ -93,7 +95,7 @@ export default async function DoctorDetails({ params }) {
             </div>
           </div>
 
-          <button className="btn btn-primary">
+          <button className="btn btn-primary w-full md:w-auto px-10 rounded-xl">
             Book Appointment
           </button>
         </div>
