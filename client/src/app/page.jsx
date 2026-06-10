@@ -1,3 +1,4 @@
+import Link from "next/link";
 import TopDoctors from "@/components/doctors/TopDoctors";
 
 export default function HomePage() {
@@ -8,7 +9,7 @@ export default function HomePage() {
           <div className="max-w-3xl">
             <h1 className="text-5xl md:text-6xl font-bold">
               Book Doctor Appointments
-              <span className="text-primary">
+              <span className="text-blue-600">
                 {" "}
                 Easily
               </span>
@@ -21,14 +22,28 @@ export default function HomePage() {
               few clicks.
             </p>
 
-            <button className="btn btn-primary btn-lg rounded-xl">
-              Find Doctors
-            </button>
+            <div className="flex flex-col sm:flex-row justify-center gap-4">
+              <Link
+                href="/doctors"
+                className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition duration-300"
+              >
+                View All Doctors
+              </Link>
+
+              <a
+                href="#top-doctors"
+                className="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition duration-300"
+              >
+                Top Doctors
+              </a>
+            </div>
           </div>
         </div>
       </section>
 
-      <TopDoctors />
+      <div id="top-doctors">
+        <TopDoctors />
+      </div>
     </>
   );
 }

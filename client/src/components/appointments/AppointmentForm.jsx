@@ -35,17 +35,20 @@ export default function AppointmentForm({
 
       form.reset();
     } catch (error) {
-      console.log(error);
-      alert("Booking failed!");
+      console.error(error);
+
+      alert(
+        "Failed to book appointment!"
+      );
     }
 
     setLoading(false);
   };
 
   return (
-    <div className="card bg-base-100 shadow-xl mt-10">
+    <div className="card bg-base-100 shadow-2xl border border-gray-200 mt-10">
       <div className="card-body">
-        <h2 className="card-title text-2xl">
+        <h2 className="card-title text-3xl font-bold mb-4">
           Book Appointment
         </h2>
 
@@ -56,7 +59,7 @@ export default function AppointmentForm({
           <input
             name="name"
             type="text"
-            placeholder="Your Name"
+            placeholder="Enter Your Name"
             className="input input-bordered w-full"
             required
           />
@@ -64,7 +67,7 @@ export default function AppointmentForm({
           <input
             name="email"
             type="email"
-            placeholder="Your Email"
+            placeholder="Enter Your Email"
             className="input input-bordered w-full"
             required
           />
@@ -75,7 +78,7 @@ export default function AppointmentForm({
             required
           >
             <option value="">
-              Select Time Slot
+              Select Appointment Time
             </option>
 
             {doctor.availability?.map(
@@ -91,12 +94,13 @@ export default function AppointmentForm({
           </select>
 
           <button
-            className="btn btn-primary w-full"
-            disabled={loading}
-          >
-            {loading
+             type="submit"
+             disabled={loading}
+             className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-xl shadow-lg transition duration-300"
+>
+              {loading
               ? "Booking..."
-              : "Confirm Appointment"}
+             : "Confirm Appointment"}
           </button>
         </form>
       </div>
