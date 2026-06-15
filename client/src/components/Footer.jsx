@@ -1,41 +1,93 @@
-import {
-  FaFacebook,
-  FaGithub,
-} from "react-icons/fa";
+import Link from "next/link";
 
-import { FaXTwitter } from "react-icons/fa6";
-
-const Footer = () => {
+export default function Footer() {
   return (
-    <footer className="footer footer-center p-10 bg-base-200 text-base-content">
-      <aside>
-        <h2 className="text-2xl font-bold">
-          DocAppoint
-        </h2>
+    <footer className="bg-slate-900 text-white mt-20">
 
-        <p>
-          Smart Doctor Appointment
-          Management System
-        </p>
-      </aside>
+      <div className="max-w-7xl mx-auto px-6 py-12">
 
-      <nav>
-        <div className="grid grid-flow-col gap-4 text-2xl">
-          <a>
-            <FaFacebook />
-          </a>
+        <div className="grid md:grid-cols-3 gap-10">
 
-          <a>
-            <FaGithub />
-          </a>
+          {/* Logo */}
+          <div>
+            <h2 className="text-3xl font-bold text-blue-400">
+              DocAppoint
+            </h2>
 
-          <a>
-            <FaXTwitter />
-          </a>
+            <p className="mt-4 text-gray-300">
+              Smart Doctor Appointment
+              Management System for easy and
+              secure healthcare booking.
+            </p>
+          </div>
+
+          {/* Quick Links */}
+          <div>
+            <h3 className="text-xl font-semibold mb-4">
+              Quick Links
+            </h3>
+
+            <div className="flex flex-col gap-2">
+              <Link href="/">
+                Home
+              </Link>
+
+              <Link href="/doctors">
+                Doctors
+              </Link>
+
+              <Link href="/appointments">
+                Appointments
+              </Link>
+
+              <Link href="/login">
+                Login
+              </Link>
+            </div>
+          </div>
+
+          {/* Contact */}
+          <div>
+            <h3 className="text-xl font-semibold mb-4">
+              Contact
+            </h3>
+
+            <p>Email: support@docappoint.com</p>
+            <p>Phone: +880 1234-567890</p>
+
+            <div className="flex gap-4 mt-4">
+
+              <a
+                href="https://facebook.com"
+                target="_blank"
+              >
+                🌐 Facebook
+              </a>
+
+              <a
+                href="https://github.com"
+                target="_blank"
+              >
+                💻 GitHub
+              </a>
+
+              <a
+                href="https://x.com"
+                target="_blank"
+              >
+                ✖ X
+              </a>
+
+            </div>
+          </div>
+
         </div>
-      </nav>
+
+        <div className="border-t border-slate-700 mt-10 pt-6 text-center text-gray-400">
+          © 2026 DocAppoint. All Rights Reserved.
+        </div>
+
+      </div>
     </footer>
   );
-};
-
-export default Footer;
+}
