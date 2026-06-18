@@ -8,13 +8,19 @@ export const metadata = {
   description: "Doctor Appointment Manager",
 };
 
-export default function RootLayout({ children }) {
+export default function RootLayout({
+  children,
+}) {
   return (
     <html lang="en">
-      <body>
+      <body className="bg-slate-50 min-h-screen flex flex-col">
         <AuthProvider>
           <Navbar />
-          <main>{children}</main>
+
+          <main className="flex-grow">
+            {children}
+          </main>
+
           <Footer />
         </AuthProvider>
       </body>
