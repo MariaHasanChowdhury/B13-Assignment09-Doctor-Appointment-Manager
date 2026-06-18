@@ -193,6 +193,19 @@ return (
         </div>
 
         {/* Mobile Login/Register */}
+
+        {user && (
+          <button
+          onClick={() => {
+          logoutUser();
+          setOpen(false);
+         }}
+           className="mt-8 w-full py-3 rounded-xl bg-red-500 text-white font-semibold hover:bg-red-600 transition"
+          >
+          Logout
+          </button>
+        )}
+
         {!user && (
           <div className="mt-8 flex flex-col gap-3">
 
