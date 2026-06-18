@@ -1,123 +1,93 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
+import { usePathname } from "next/navigation";
 import { useAuth } from "@/providers/AuthProvider";
 import {
-  Menu,
-  User,
+Menu,
+X,
+User,
 } from "lucide-react";
 
 export default function Navbar() {
-  const { user, logoutUser } =
-    useAuth();
+const { user, logoutUser } =
+useAuth();
 
-  return (
-    <div className="sticky top-0 z-50 bg-white shadow-md">
-      <div className="navbar max-w-7xl mx-auto px-4">
+const pathname =
+usePathname();
+
+const [open, setOpen] =
+useState(false);
+
+const navLinks = [
+{
+name: "Home",
+path: "/",
+},
+{
+name: "Doctors",
+path: "/doctors",
+},
+{
+name: "Appointments",
+path: "/appointments",
+},
+{
+name: "Dashboard",
+path: "/dashboard",
+},
+];
+
+return (
+<> <nav className="sticky top-0 z-50 bg-white shadow-md"> <div className="max-w-7xl mx-auto px-4">
+
+
+      <div className="h-20 flex items-center justify-between">
 
         {/* Mobile Menu */}
-        <div className="navbar-start lg:hidden">
-          <div className="dropdown">
-            <label
-              tabIndex={0}
-              className="btn btn-ghost"
-            >
-              <Menu size={26} />
-            </label>
-
-            <ul
-              tabIndex={0}
-              className="menu menu-sm dropdown-content mt-3 z-[1] p-4 shadow bg-white rounded-xl w-64 gap-2"
-            >
-              <li>
-                <Link href="/">
-                  Home
-                </Link>
-              </li>
-
-              <li>
-                <Link href="/doctors">
-                  Doctors
-                </Link>
-              </li>
-
-              <li>
-                <Link href="/appointments">
-                  Appointments
-                </Link>
-              </li>
-
-              <li>
-                <Link href="/dashboard">
-                  Dashboard
-                </Link>
-              </li>
-
-              {!user && (
-                <>
-                  <li>
-                    <Link href="/login">
-                      Login
-                    </Link>
-                  </li>
-
-                  <li>
-                    <Link href="/register">
-                      Register
-                    </Link>
-                  </li>
-                </>
-              )}
-            </ul>
-          </div>
-        </div>
+        <button
+          onClick={() => setOpen(true)}
+          className="lg:hidden"
+        >
+          <Menu size={28} />
+        </button>
 
         {/* Logo */}
-        <div className="navbar-start lg:flex-1">
-          <Link
-            href="/"
-            className="text-3xl font-extrabold"
-          >
-            <span className="text-blue-600">
-              Doc
-            </span>
-            <span className="text-green-600">
-              Appoint
-            </span>
-          </Link>
-        </div>
+        <Link
+          href="/"
+          className="text-3xl font-extrabold"
+        >
+          <span className="text-blue-600">
+            Doc
+          </span>
+          <span className="text-green-600">
+            Appoint
+          </span>
+        </Link>
 
         {/* Desktop Menu */}
-        <div className="navbar-center hidden lg:flex">
-          <ul className="menu menu-horizontal gap-3 text-base font-medium">
-            <li>
-              <Link href="/">
-                Home
-              </Link>
-            </li>
+        <ul className="hidden lg:flex items-center gap-8">
 
-            <li>
-              <Link href="/doctors">
-                Doctors
+          {navLinks.map((link) => (
+            <li key={link.path}>
+              <Link
+                href={link.path}
+                className={`pb-1 border-b-2 font-semibold transition-all duration-300 ${
+                  pathname === link.path
+                    ? "text-blue-600 border-blue-600"
+                    : "text-gray-700 border-transparent hover:text-blue-600 hover:border-blue-600"
+                }`}
+              >
+                {link.name}
               </Link>
             </li>
+          ))}
 
-            <li>
-              <Link href="/appointments">
-                Appointments
-              </Link>
-            </li>
-
-            <li>
-              <Link href="/dashboard">
-                Dashboard
-              </Link>
-            </li>
-          </ul>
-        </div>
+        </ul>
 
         {/* Right Side */}
-        <div className="navbar-end gap-3">
+        <div className="flex items-center gap-3">
 
           {user ? (
             <>
@@ -127,12 +97,12 @@ export default function Navbar() {
                   "https://i.pravatar.cc/150"
                 }
                 alt="user"
-                className="w-10 h-10 rounded-full border"
+                className="w-10 h-10 rounded-full border-2 border-blue-500"
               />
 
               <button
                 onClick={logoutUser}
-                className="hidden lg:flex px-5 py-2 rounded-xl bg-red-500 text-white font-semibold hover:bg-red-600 transition"
+                className="hidden lg:block px-5 py-2 rounded-xl bg-red-500 text-white font-semibold hover:bg-red-600 transition"
               >
                 Logout
               </button>
@@ -141,25 +111,127 @@ export default function Navbar() {
             <>
               <Link
                 href="/login"
-                className="hidden lg:flex px-5 py-2 rounded-xl border-2 border-blue-600 text-blue-600 font-semibold hover:bg-blue-600 hover:text-white transition"
+                className={`hidden lg:block px-5 py-2 rounded-xl border-2 font-semibold transition-all duration-300 ${
+                  pathname === "/login"
+                    ? "bg-blue-600 text-white border-blue-600"
+                    : "border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white"
+                }`}
               >
                 Login
               </Link>
 
               <Link
                 href="/register"
-                className="hidden lg:flex px-5 py-2 rounded-xl bg-green-600 text-white font-semibold hover:bg-green-700 transition"
+                className={`hidden lg:block px-5 py-2 rounded-xl font-semibold transition-all duration-300 ${
+                  pathname === "/register"
+                    ? "bg-green-700 text-white"
+                    : "bg-green-600 text-white hover:bg-green-700"
+                }`}
               >
                 Register
               </Link>
 
-              <div className="lg:hidden">
-                <User size={24} />
-              </div>
+              <User
+                size={24}
+                className="lg:hidden"
+              />
             </>
           )}
         </div>
+
       </div>
     </div>
-  );
+  </nav>
+
+  {/* Mobile Sidebar */}
+  {open && (
+    <div className="fixed inset-0 bg-black/50 z-50">
+
+      <div className="bg-white w-72 h-full p-6">
+
+        <div className="flex justify-between items-center mb-8">
+
+          <h2 className="text-2xl font-bold">
+            <span className="text-blue-600">
+              Doc
+            </span>
+            <span className="text-green-600">
+              Appoint
+            </span>
+          </h2>
+
+          <button
+            onClick={() =>
+              setOpen(false)
+            }
+          >
+            <X size={28} />
+          </button>
+
+        </div>
+
+        {/* Mobile Links */}
+        <div className="flex flex-col gap-4">
+
+          {navLinks.map((link) => (
+            <Link
+              key={link.path}
+              href={link.path}
+              onClick={() =>
+                setOpen(false)
+              }
+              className={`px-4 py-3 rounded-xl font-semibold transition-all duration-300 ${
+                pathname === link.path
+                  ? "bg-blue-600 text-white"
+                  : "text-gray-700 hover:bg-blue-600 hover:text-white"
+              }`}
+            >
+              {link.name}
+            </Link>
+          ))}
+
+        </div>
+
+        {/* Mobile Login/Register */}
+        {!user && (
+          <div className="mt-8 flex flex-col gap-3">
+
+            <Link
+              href="/login"
+              onClick={() =>
+                setOpen(false)
+              }
+              className={`text-center py-3 rounded-xl font-semibold transition-all duration-300 ${
+                pathname === "/login"
+                  ? "bg-blue-600 text-white"
+                  : "border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white"
+              }`}
+            >
+              Login
+            </Link>
+
+            <Link
+              href="/register"
+              onClick={() =>
+                setOpen(false)
+              }
+              className={`text-center py-3 rounded-xl font-semibold transition-all duration-300 ${
+                pathname === "/register"
+                  ? "bg-green-700 text-white"
+                  : "bg-green-600 text-white hover:bg-green-700"
+              }`}
+            >
+              Register
+            </Link>
+
+          </div>
+        )}
+
+      </div>
+    </div>
+  )}
+</>
+
+
+);
 }
