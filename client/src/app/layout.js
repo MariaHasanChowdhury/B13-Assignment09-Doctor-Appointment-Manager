@@ -2,10 +2,12 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import AuthProvider from "@/providers/AuthProvider";
+import { Toaster } from "react-hot-toast";
 
 export const metadata = {
   title: "DocAppoint",
-  description: "Doctor Appointment Manager",
+  description:
+    "Doctor Appointment Booking System",
 };
 
 export default function RootLayout({
@@ -22,6 +24,8 @@ export default function RootLayout({
           </main>
 
           <Footer />
+
+          <Toaster position="top-right" />
         </AuthProvider>
       </body>
     </html>

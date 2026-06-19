@@ -1,34 +1,21 @@
 "use client";
 
 import Link from "next/link";
-import { useAuth } from "@/providers/AuthProvider";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/providers/AuthProvider";
+import toast from "react-hot-toast";
 
 export default function LoginPage() {
   const { loginUser } = useAuth();
+
   const router = useRouter();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] =
+    useState("");
 
-  const handleGoogleLogin = async () => {
-    try {
-      const user = {
-        name: "Google User",
-        email: "googleuser@gmail.com",
-        photo: "https://i.pravatar.cc/150?img=12",
-      };
-
-      loginUser(user);
-
-      alert("Google Login Successful!");
-      router.push("/");
-    } catch (error) {
-      console.log(error);
-      alert("Login Failed");
-    }
-  };
+  const [password, setPassword] =
+    useState("");
 
   const handleEmailLogin = (e) => {
     e.preventDefault();
@@ -36,24 +23,54 @@ export default function LoginPage() {
     const user = {
       name: "Demo User",
       email,
-      photo: "https://i.pravatar.cc/150?img=20",
+      photo:
+        "https://i.pravatar.cc/150?img=20",
     };
 
     loginUser(user);
 
-    alert("Login Successful!");
+    toast.success(
+      "Login Successful!"
+    );
+
     router.push("/");
   };
 
+  const handleGoogleLogin =
+    async () => {
+      try {
+        const user = {
+          name: "Google User",
+          email:
+            "googleuser@gmail.com",
+          photo:
+            "https://i.pravatar.cc/150?img=12",
+        };
+
+        loginUser(user);
+
+        toast.success(
+          "Google Login Successful!"
+        );
+
+        router.push("/");
+      } catch (error) {
+        console.log(error);
+
+        toast.error(
+          "Login Failed!"
+        );
+      }
+    };
+
   return (
-    <div className="min-h-screen flex justify-center items-center px-4 bg-base-200">
+    <div className="min-h-screen flex justify-center items-center px-4 bg-slate-100">
       <div className="w-full max-w-md bg-white shadow-xl rounded-2xl p-8">
 
         <h1 className="text-4xl font-bold text-center mb-6">
           Login
         </h1>
 
-        {/* Email Login */}
         <form
           onSubmit={handleEmailLogin}
           className="space-y-4"
@@ -64,7 +81,9 @@ export default function LoginPage() {
             className="input input-bordered w-full"
             value={email}
             onChange={(e) =>
-              setEmail(e.target.value)
+              setEmail(
+                e.target.value
+              )
             }
             required
           />
@@ -75,10 +94,21 @@ export default function LoginPage() {
             className="input input-bordered w-full"
             value={password}
             onChange={(e) =>
-              setPassword(e.target.value)
+              setPassword(
+                e.target.value
+              )
             }
             required
           />
+
+          <div className="text-right">
+            <Link
+              href="#"
+              className="text-sm text-blue-600 hover:underline"
+            >
+              Forgot Password?
+            </Link>
+          </div>
 
           <button
             type="submit"
@@ -88,13 +118,14 @@ export default function LoginPage() {
           </button>
         </form>
 
-        <div className="divider my-6">
+        <div className="divider">
           OR
         </div>
 
-        {/* Google Login */}
         <button
-          onClick={handleGoogleLogin}
+          onClick={
+            handleGoogleLogin
+          }
           className="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded-xl font-semibold transition"
         >
           Continue with Google
@@ -109,6 +140,7 @@ export default function LoginPage() {
             Register
           </Link>
         </p>
+
       </div>
     </div>
   );
