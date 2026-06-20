@@ -1,31 +1,45 @@
-import axios from "axios";
+"use client";
+
+import { useEffect, useState } from "react";
+import api from "@/services/api";
 import DeleteButton from "@/components/appointments/DeleteButton";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import { useAuth } from "@/providers/AuthProvider";
 
-async function getAppointments() {
-  try {
-    const res = await axios.get(
-      "http://localhost:5000/api/appointments"
-    );
+export default function AppointmentsPage() {
+  const { user } = useAuth();
 
-    return res.data;
-  } catch (error) {
-    console.error(
-      "Error fetching appointments:",
-      error
-    );
+  const [appointments, setAppointments] =
+    useState([]);
 
-    return [];
-  }
-}
+  const [loading, setLoading] =
+    useState(true);
 
-export default async function AppointmentsPage() {
-  const appointments =
-    await getAppointments();
+  useEffect(() => {
+    const fetchAppointments =
+      async () => {
+        try {
+          const res = await api.get(
+            `/appointments?email=${user?.email}`
+          );
+
+          setAppointments(res.data);
+        } catch (error) {
+          console.log(error);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+    if (user?.email) {
+      fetchAppointments();
+    }
+  }, [user]);
 
   return (
     <ProtectedRoute>
       <section className="max-w-6xl mx-auto px-4 py-16">
+
         <div className="text-center mb-12">
           <h1 className="text-5xl font-bold">
             My Appointments
@@ -36,7 +50,11 @@ export default async function AppointmentsPage() {
           </p>
         </div>
 
-        {appointments.length === 0 ? (
+        {loading ? (
+          <div className="flex justify-center py-20">
+            <span className="loading loading-spinner loading-lg"></span>
+          </div>
+        ) : appointments.length === 0 ? (
           <div className="text-center py-20">
             <h2 className="text-3xl font-semibold">
               No Appointments Found
@@ -44,6 +62,7 @@ export default async function AppointmentsPage() {
           </div>
         ) : (
           <div className="grid gap-6">
+
             {appointments.map(
               (appointment) => (
                 <div
@@ -95,6 +114,15 @@ export default async function AppointmentsPage() {
                     }
                   </p>
 
+                  <p>
+                    <strong>Status:</strong>{" "}
+                    <span className="text-green-600 font-semibold">
+                      {
+                        appointment.status
+                      }
+                    </span>
+                  </p>
+
                   <DeleteButton
                     appointmentId={
                       appointment._id
@@ -103,8 +131,10 @@ export default async function AppointmentsPage() {
                 </div>
               )
             )}
+
           </div>
         )}
+
       </section>
     </ProtectedRoute>
   );
