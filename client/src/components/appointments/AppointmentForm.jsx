@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import api from "@/services/api";
+import toast from "react-hot-toast";
 
 export default function AppointmentForm({
   doctor,
@@ -29,7 +30,7 @@ export default function AppointmentForm({
         appointmentData
       );
 
-      alert(
+      toast.success(
         "Appointment booked successfully!"
       );
 
@@ -37,7 +38,7 @@ export default function AppointmentForm({
     } catch (error) {
       console.error(error);
 
-      alert(
+      toast.error(
         "Failed to book appointment!"
       );
     }

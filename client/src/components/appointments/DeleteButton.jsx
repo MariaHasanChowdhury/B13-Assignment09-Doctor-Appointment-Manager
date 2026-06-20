@@ -2,6 +2,7 @@
 
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 export default function DeleteButton({
   appointmentId,
@@ -20,14 +21,14 @@ export default function DeleteButton({
         `http://localhost:5000/api/appointments/${appointmentId}`
       );
 
-      alert(
+      toast.success(
         "Appointment cancelled successfully!"
       );
 
       router.refresh();
     } catch (error) {
       console.error(error);
-      alert("Failed to cancel appointment");
+      toast.error("Failed to cancel appointment");
     }
   };
 
