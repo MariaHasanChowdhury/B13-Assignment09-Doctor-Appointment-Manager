@@ -41,6 +41,15 @@ export default function AuthProvider({
     setUser(userData);
   };
 
+  const updateUser = (userData) => {
+    localStorage.setItem(
+      "user",
+      JSON.stringify(userData)
+    );
+
+    setUser(userData);
+  };
+
   const logoutUser = () => {
     localStorage.removeItem("user");
     setUser(null);
@@ -53,6 +62,7 @@ export default function AuthProvider({
         loading,
         loginUser,
         logoutUser,
+        updateUser,
       }}
     >
       {children}
