@@ -1,14 +1,12 @@
 "use client";
 
-import axios from "axios";
-import { useRouter } from "next/navigation";
+import api from "@/services/api";
 import toast from "react-hot-toast";
 
 export default function DeleteButton({
   appointmentId,
+  onDeleted,
 }) {
-  const router = useRouter();
-
   const handleDelete = async () => {
     const confirmDelete = window.confirm(
       "Are you sure you want to cancel this appointment?"
@@ -17,27 +15,32 @@ export default function DeleteButton({
     if (!confirmDelete) return;
 
     try {
-      await axios.delete(
-        `http://localhost:5000/api/appointments/${appointmentId}`
+      await api.delete(
+        `/appointments/${appointmentId}`
       );
 
       toast.success(
-        "Appointment cancelled successfully!"
+        "Appointment deleted successfully!"
       );
 
-      router.refresh();
+      if (onDeleted) {
+        onDeleted(appointmentId);
+      }
     } catch (error) {
       console.error(error);
-      toast.error("Failed to cancel appointment");
+
+      toast.error(
+        "Failed to delete appointment!"
+      );
     }
   };
 
   return (
     <button
       onClick={handleDelete}
-      className="mt-4 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-semibold"
+      className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-semibold transition"
     >
-      Cancel Appointment
+      Delete
     </button>
   );
 }
