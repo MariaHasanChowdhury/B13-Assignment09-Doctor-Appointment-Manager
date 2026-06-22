@@ -3,8 +3,7 @@ const router = express.Router();
 
 const Appointment = require("../models/Appointment");
 
-
-// GET ALL APPOINTMENTS
+// GET APPOINTMENTS
 router.get("/", async (req, res) => {
   try {
     const { email } = req.query;
@@ -15,27 +14,32 @@ router.get("/", async (req, res) => {
       query.patientEmail = email;
     }
 
-    const appointments = await Appointment.find(query)
-      .populate("doctorId")
-      .sort({ createdAt: -1 });
+    const appointments =
+      await Appointment.find(query)
+        .populate("doctorId")
+        .sort({ createdAt: -1 });
 
-    res.status(200).json(appointments);
+    res.status(200).json(
+      appointments
+    );
   } catch (error) {
     res.status(500).json({
       message: error.message,
     });
   }
 });
-
 
 // CREATE APPOINTMENT
 router.post("/", async (req, res) => {
   try {
-    const appointment = await Appointment.create(
-      req.body
-    );
+    const appointment =
+      await Appointment.create(
+        req.body
+      );
 
-    res.status(201).json(appointment);
+    res.status(201).json(
+      appointment
+    );
   } catch (error) {
     res.status(500).json({
       message: error.message,
@@ -43,6 +47,34 @@ router.post("/", async (req, res) => {
   }
 });
 
+// UPDATE APPOINTMENT
+router.put("/:id", async (req, res) => {
+  try {
+    const updatedAppointment =
+      await Appointment.findByIdAndUpdate(
+        req.params.id,
+        req.body,
+        {
+          new: true,
+        }
+      ).populate("doctorId");
+
+    if (!updatedAppointment) {
+      return res.status(404).json({
+        message:
+          "Appointment not found",
+      });
+    }
+
+    res.status(200).json(
+      updatedAppointment
+    );
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+});
 
 // DELETE APPOINTMENT
 router.delete("/:id", async (req, res) => {
@@ -54,7 +86,8 @@ router.delete("/:id", async (req, res) => {
 
     if (!deletedAppointment) {
       return res.status(404).json({
-        message: "Appointment not found",
+        message:
+          "Appointment not found",
       });
     }
 
