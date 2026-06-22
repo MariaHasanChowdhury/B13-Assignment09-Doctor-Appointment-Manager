@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import api from "@/services/api";
 import DeleteButton from "@/components/appointments/DeleteButton";
+import UpdateAppointmentModal from "@/components/appointments/UpdateAppointmentModal";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { useAuth } from "@/providers/AuthProvider";
 
@@ -14,6 +15,11 @@ export default function AppointmentsPage() {
 
   const [loading, setLoading] =
     useState(true);
+
+  const [
+    selectedAppointment,
+    setSelectedAppointment,
+  ] = useState(null);
 
   useEffect(() => {
     const fetchAppointments =
@@ -123,16 +129,57 @@ export default function AppointmentsPage() {
                     </span>
                   </p>
 
-                  <DeleteButton
-                    appointmentId={
-                      appointment._id
-                    }
-                  />
+                  <div className="flex gap-3 mt-4">
+
+                    <button
+                      onClick={() =>
+                        setSelectedAppointment(
+                          appointment
+                        )
+                      }
+                      className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold"
+                    >
+                      Update
+                    </button>
+
+                    <DeleteButton
+                      appointmentId={
+                        appointment._id
+                      }
+                    />
+
+                  </div>
                 </div>
               )
             )}
 
           </div>
+        )}
+
+        {selectedAppointment && (
+          <UpdateAppointmentModal
+            appointment={
+              selectedAppointment
+            }
+            onClose={() =>
+              setSelectedAppointment(
+                null
+              )
+            }
+            onUpdated={(
+              updatedAppointment
+            ) => {
+              setAppointments(
+                appointments.map(
+                  (item) =>
+                    item._id ===
+                    updatedAppointment._id
+                      ? updatedAppointment
+                      : item
+                )
+              );
+            }}
+          />
         )}
 
       </section>
