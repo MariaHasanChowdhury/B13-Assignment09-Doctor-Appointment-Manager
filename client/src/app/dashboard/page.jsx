@@ -34,9 +34,9 @@ export default function DashboardPage() {
 
   return (
     <ProtectedRoute>
-
       <section className="max-w-7xl mx-auto px-4 py-16">
 
+        {/* Header */}
         <div className="mb-10">
           <h1 className="text-5xl font-bold">
             Dashboard
@@ -47,8 +47,7 @@ export default function DashboardPage() {
           </p>
         </div>
 
-        {/* Stats */}
-
+        {/* Stats Cards */}
         <div className="grid md:grid-cols-3 gap-6 mb-12">
 
           <div className="bg-blue-600 text-white p-8 rounded-2xl shadow-lg">
@@ -84,14 +83,13 @@ export default function DashboardPage() {
         </div>
 
         {/* Quick Actions */}
-
         <div className="bg-white rounded-2xl shadow-lg border p-8">
 
           <h2 className="text-3xl font-bold mb-8">
             Quick Actions
           </h2>
 
-          <div className="grid md:grid-cols-3 gap-5">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
 
             <Link
               href="/doctors"
@@ -108,6 +106,13 @@ export default function DashboardPage() {
             </Link>
 
             <Link
+              href="/dashboard/profile"
+              className="bg-orange-600 hover:bg-orange-700 text-white p-6 rounded-xl text-center font-semibold transition"
+            >
+              My Profile
+            </Link>
+
+            <Link
               href="/"
               className="bg-purple-600 hover:bg-purple-700 text-white p-6 rounded-xl text-center font-semibold transition"
             >
@@ -119,7 +124,6 @@ export default function DashboardPage() {
         </div>
 
       </section>
-
     </ProtectedRoute>
   );
 }
