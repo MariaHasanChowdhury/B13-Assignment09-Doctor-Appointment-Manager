@@ -76,6 +76,34 @@ router.put("/:id", async (req, res) => {
   }
 });
 
+// UPDATE APPOINTMENT
+router.put("/:id", async (req, res) => {
+  try {
+    const updatedAppointment =
+      await Appointment.findByIdAndUpdate(
+        req.params.id,
+        req.body,
+        {
+          new: true,
+        }
+      ).populate("doctorId");
+
+    if (!updatedAppointment) {
+      return res.status(404).json({
+        message: "Appointment not found",
+      });
+    }
+
+    res.status(200).json(
+      updatedAppointment
+    );
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+});
+
 // DELETE APPOINTMENT
 router.delete("/:id", async (req, res) => {
   try {
