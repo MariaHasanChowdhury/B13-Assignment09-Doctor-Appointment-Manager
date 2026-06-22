@@ -9,27 +9,31 @@ export default function UpdateAppointmentModal({
   onClose,
   onUpdated,
 }) {
+  const [patientName, setPatientName] =
+    useState(
+      appointment.patientName || ""
+    );
+
+  const [appointmentTime, setAppointmentTime] =
+    useState(
+      appointment.appointmentTime || ""
+    );
+
   const [loading, setLoading] =
     useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    setLoading(true);
-
-    const form = e.target;
-
-    const updatedData = {
-      patientName:
-        form.patientName.value,
-      appointmentTime:
-        form.appointmentTime.value,
-    };
-
     try {
+      setLoading(true);
+
       const res = await api.put(
         `/appointments/${appointment._id}`,
-        updatedData
+        {
+          patientName,
+          appointmentTime,
+        }
       );
 
       toast.success(
@@ -51,10 +55,11 @@ export default function UpdateAppointmentModal({
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 z-50 flex justify-center items-center p-4">
-      <div className="bg-white rounded-2xl p-6 w-full max-w-lg">
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
 
-        <h2 className="text-2xl font-bold mb-6">
+      <div className="bg-white rounded-2xl shadow-xl p-6 w-full max-w-lg">
+
+        <h2 className="text-3xl font-bold mb-6">
           Update Appointment
         </h2>
 
@@ -62,6 +67,8 @@ export default function UpdateAppointmentModal({
           onSubmit={handleSubmit}
           className="space-y-4"
         >
+          {/* Doctor Name */}
+
           <input
             type="text"
             value={
@@ -70,6 +77,8 @@ export default function UpdateAppointmentModal({
             readOnly
             className="input input-bordered w-full bg-gray-100"
           />
+
+          {/* Email */}
 
           <input
             type="email"
@@ -80,21 +89,29 @@ export default function UpdateAppointmentModal({
             className="input input-bordered w-full bg-gray-100"
           />
 
+          {/* Name */}
+
           <input
             type="text"
-            name="patientName"
-            defaultValue={
-              appointment.patientName
+            value={patientName}
+            onChange={(e) =>
+              setPatientName(
+                e.target.value
+              )
             }
             className="input input-bordered w-full"
             required
           />
 
+          {/* Time */}
+
           <input
             type="text"
-            name="appointmentTime"
-            defaultValue={
-              appointment.appointmentTime
+            value={appointmentTime}
+            onChange={(e) =>
+              setAppointmentTime(
+                e.target.value
+              )
             }
             className="input input-bordered w-full"
             required
@@ -122,6 +139,7 @@ export default function UpdateAppointmentModal({
 
           </div>
         </form>
+
       </div>
     </div>
   );

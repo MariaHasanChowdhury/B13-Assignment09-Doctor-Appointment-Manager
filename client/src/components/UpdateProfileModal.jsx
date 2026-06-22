@@ -19,10 +19,19 @@ export default function UpdateProfileModal({
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    if (name.trim().length < 3) {
+      toast.error(
+        "Name must be at least 3 characters"
+      );
+      return;
+    }
+
     const updatedUser = {
       ...user,
       name,
-      photo,
+      photo:
+        photo.trim() ||
+        "https://i.pravatar.cc/150",
     };
 
     updateUser(updatedUser);
@@ -37,9 +46,9 @@ export default function UpdateProfileModal({
   return (
     <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50 p-4">
 
-      <div className="bg-white rounded-2xl p-6 w-full max-w-md">
+      <div className="bg-white rounded-2xl p-6 w-full max-w-md shadow-xl">
 
-        <h2 className="text-2xl font-bold mb-6">
+        <h2 className="text-2xl font-bold mb-6 text-center">
           Update Profile
         </h2>
 
@@ -54,7 +63,7 @@ export default function UpdateProfileModal({
               setName(e.target.value)
             }
             className="input input-bordered w-full"
-            placeholder="Name"
+            placeholder="Full Name"
             required
           />
 
@@ -66,16 +75,15 @@ export default function UpdateProfileModal({
             }
             className="input input-bordered w-full"
             placeholder="Photo URL"
-            required
           />
 
-          <div className="flex gap-3">
+          <div className="flex gap-3 pt-2">
 
             <button
               type="submit"
               className="btn btn-success flex-1"
             >
-              Save
+              Save Changes
             </button>
 
             <button
@@ -88,7 +96,9 @@ export default function UpdateProfileModal({
 
           </div>
         </form>
+
       </div>
+
     </div>
   );
 }
