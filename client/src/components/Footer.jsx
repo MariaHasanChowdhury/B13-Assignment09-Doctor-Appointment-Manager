@@ -3,12 +3,10 @@ import Link from "next/link";
 export default function Footer() {
   return (
     <footer className="bg-slate-900 text-white mt-20">
-
       <div className="max-w-7xl mx-auto px-6 py-12">
 
         <div className="grid md:grid-cols-3 gap-10">
 
-          {/* Logo */}
           <div>
             <h2 className="text-3xl font-bold text-blue-400">
               DocAppoint
@@ -21,32 +19,19 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* Quick Links */}
           <div>
             <h3 className="text-xl font-semibold mb-4">
               Quick Links
             </h3>
 
             <div className="flex flex-col gap-2">
-              <Link href="/">
-                Home
-              </Link>
-
-              <Link href="/doctors">
-                Doctors
-              </Link>
-
-              <Link href="/appointments">
-                Appointments
-              </Link>
-
-              <Link href="/login">
-                Login
-              </Link>
+              <Link href="/">Home</Link>
+              <Link href="/doctors">Doctors</Link>
+              <Link href="/appointments">Appointments</Link>
+              <Link href="/login">Login</Link>
             </div>
           </div>
 
-          {/* Contact */}
           <div>
             <h3 className="text-xl font-semibold mb-4">
               Contact
@@ -60,6 +45,7 @@ export default function Footer() {
               <a
                 href="https://facebook.com"
                 target="_blank"
+                rel="noopener noreferrer"
               >
                 🌐 Facebook
               </a>
@@ -67,6 +53,7 @@ export default function Footer() {
               <a
                 href="https://github.com"
                 target="_blank"
+                rel="noopener noreferrer"
               >
                 💻 GitHub
               </a>
@@ -74,6 +61,7 @@ export default function Footer() {
               <a
                 href="https://x.com"
                 target="_blank"
+                rel="noopener noreferrer"
               >
                 ✖ X
               </a>

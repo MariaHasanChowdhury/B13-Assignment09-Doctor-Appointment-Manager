@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import api from "@/services/api";
 import DeleteButton from "@/components/appointments/DeleteButton";
 import UpdateAppointmentModal from "@/components/appointments/UpdateAppointmentModal";
@@ -15,6 +15,9 @@ export default function AppointmentsPage() {
 
   const [loading, setLoading] =
     useState(true);
+
+  const [searchTerm, setSearchTerm] =
+    useState("");
 
   const [
     selectedAppointment,
@@ -42,6 +45,18 @@ export default function AppointmentsPage() {
     }
   }, [user]);
 
+  const filteredAppointments =
+    useMemo(() => {
+      return appointments.filter(
+        (appointment) =>
+          appointment?.doctorId?.name
+            ?.toLowerCase()
+            .includes(
+              searchTerm.toLowerCase()
+            )
+      );
+    }, [appointments, searchTerm]);
+
   return (
     <ProtectedRoute>
       <section className="max-w-6xl mx-auto px-4 py-16">
@@ -58,13 +73,28 @@ export default function AppointmentsPage() {
           </p>
         </div>
 
+        {/* Search */}
+
+        <div className="mb-8">
+          <input
+            type="text"
+            placeholder="Search by doctor name..."
+            value={searchTerm}
+            onChange={(e) =>
+              setSearchTerm(e.target.value)
+            }
+            className="input input-bordered w-full"
+          />
+        </div>
+
         {/* Loading */}
 
         {loading ? (
           <div className="flex justify-center py-20">
             <span className="loading loading-spinner loading-lg"></span>
           </div>
-        ) : appointments.length === 0 ? (
+        ) : filteredAppointments.length ===
+          0 ? (
           <div className="text-center py-20">
             <h2 className="text-3xl font-semibold">
               No Appointments Found
@@ -73,7 +103,7 @@ export default function AppointmentsPage() {
         ) : (
           <div className="grid gap-6">
 
-            {appointments.map(
+            {filteredAppointments.map(
               (appointment) => (
                 <div
                   key={appointment._id}
@@ -133,8 +163,6 @@ export default function AppointmentsPage() {
                     </span>
                   </p>
 
-                  {/* Buttons */}
-
                   <div className="flex flex-wrap gap-3 mt-5">
 
                     <button
@@ -164,7 +192,6 @@ export default function AppointmentsPage() {
                     />
 
                   </div>
-
                 </div>
               )
             )}

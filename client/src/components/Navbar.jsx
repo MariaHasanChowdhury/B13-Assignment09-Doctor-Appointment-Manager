@@ -13,6 +13,10 @@ User,
 export default function Navbar() {
 const { user, logoutUser } =
 useAuth();
+const handleLogout = () => {
+  logoutUser();
+  window.location.href = "/";
+};
 
 const pathname =
 usePathname();
@@ -101,10 +105,10 @@ return (
               />
 
               <button
-                onClick={logoutUser}
-                className="hidden lg:block px-5 py-2 rounded-xl bg-red-500 text-white font-semibold hover:bg-red-600 transition"
+                  onClick={handleLogout}
+                  className="hidden lg:block px-5 py-2 rounded-xl bg-red-500 text-white font-semibold hover:bg-red-600 transition"
               >
-                Logout
+                 Logout
               </button>
             </>
           ) : (
@@ -196,13 +200,13 @@ return (
 
         {user && (
           <button
-          onClick={() => {
-          logoutUser();
-          setOpen(false);
-         }}
+           onClick={() => {
+           handleLogout();
+           setOpen(false);
+           }}
            className="mt-8 w-full py-3 rounded-xl bg-red-500 text-white font-semibold hover:bg-red-600 transition"
           >
-          Logout
+            Logout
           </button>
         )}
 
