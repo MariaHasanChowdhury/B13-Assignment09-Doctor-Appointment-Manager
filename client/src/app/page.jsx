@@ -1,6 +1,12 @@
 import Link from "next/link";
 import TopDoctors from "@/components/doctors/TopDoctors";
 
+export const metadata = {
+  title: "Home | DocAppoint",
+  description:
+    "Book appointments with trusted doctors online.",
+};
+
 export default function HomePage() {
   return (
     <>

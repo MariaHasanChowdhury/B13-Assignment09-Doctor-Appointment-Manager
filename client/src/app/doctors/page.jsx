@@ -18,6 +18,12 @@ async function getDoctors() {
   }
 }
 
+export const metadata = {
+  title: "Doctors | DocAppoint",
+  description:
+    "Browse all available doctors.",
+};
+
 export default async function DoctorsPage() {
   const doctors = await getDoctors();
 

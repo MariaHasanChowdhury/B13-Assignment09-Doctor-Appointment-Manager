@@ -1,4 +1,4 @@
-import axios from "axios";
+ import axios from "axios";
 import AppointmentForm from "@/components/appointments/AppointmentForm";
 
 async function getDoctor(id) {
@@ -9,15 +9,37 @@ async function getDoctor(id) {
 
     return res.data;
   } catch (error) {
-    console.error("Error fetching doctor:", error);
+    console.error(
+      "Error fetching doctor:",
+      error
+    );
+
     return null;
   }
+}
+
+export async function generateMetadata({
+  params,
+}) {
+  const doctor = await getDoctor(
+    params.id
+  );
+
+  return {
+    title: doctor
+      ? `${doctor.name} | DocAppoint`
+      : "Doctor Details | DocAppoint",
+
+    description: doctor
+      ? `${doctor.specialty} specialist at ${doctor.hospital}. Book appointments online with DocAppoint.`
+      : "View doctor profile and book appointment.",
+  };
 }
 
 export default async function DoctorDetails({
   params,
 }) {
-  const { id } = await params;
+  const { id } = params;
 
   const doctor = await getDoctor(id);
 
@@ -34,6 +56,7 @@ export default async function DoctorDetails({
   return (
     <section className="max-w-6xl mx-auto px-4 py-16">
       <div className="grid md:grid-cols-2 gap-10">
+
         <div>
           <img
             src={doctor.image}
@@ -67,8 +90,10 @@ export default async function DoctorDetails({
           </p>
 
           <p className="mb-3">
-            <strong>Consultation Fee:</strong> ৳
-            {doctor.fee}
+            <strong>
+              Consultation Fee:
+            </strong>{" "}
+            ৳{doctor.fee}
           </p>
 
           <p className="mb-4">
@@ -99,11 +124,13 @@ export default async function DoctorDetails({
             </div>
           </div>
         </div>
+
       </div>
 
-      {/* Appointment Form */}
       <div className="mt-12">
-        <AppointmentForm doctor={doctor} />
+        <AppointmentForm
+          doctor={doctor}
+        />
       </div>
     </section>
   );
