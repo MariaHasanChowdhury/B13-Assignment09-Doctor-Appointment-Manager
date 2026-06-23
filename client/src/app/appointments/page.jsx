@@ -8,230 +8,231 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import { useAuth } from "@/providers/AuthProvider";
 
 export default function AppointmentsPage() {
-  const { user } = useAuth();
+const { user } = useAuth();
 
-  const [appointments, setAppointments] =
-    useState([]);
+const [appointments, setAppointments] =
+useState([]);
 
-  const [loading, setLoading] =
-    useState(true);
+const [loading, setLoading] =
+useState(true);
 
-  const [searchTerm, setSearchTerm] =
-    useState("");
+const [searchTerm, setSearchTerm] =
+useState("");
 
-  const [
-    selectedAppointment,
-    setSelectedAppointment,
-  ] = useState(null);
+const [
+selectedAppointment,
+setSelectedAppointment,
+] = useState(null);
 
-  const fetchAppointments =
-    async () => {
-      try {
-        const res = await api.get(
-          `/appointments?email=${user?.email}`
-        );
+const fetchAppointments =
+async () => {
+try {
+const res = await api.get(
+`/appointments?email=${user?.email}`
+);
 
-        setAppointments(res.data);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLoading(false);
-      }
-    };
 
-  useEffect(() => {
-    if (user?.email) {
-      fetchAppointments();
-    }
-  }, [user]);
+    setAppointments(res.data);
+  } catch (error) {
+    console.log(error);
+  } finally {
+    setLoading(false);
+  }
+};
 
-  const filteredAppointments =
-    useMemo(() => {
-      return appointments.filter(
-        (appointment) =>
-          appointment?.doctorId?.name
-            ?.toLowerCase()
-            .includes(
-              searchTerm.toLowerCase()
-            )
-      );
-    }, [appointments, searchTerm]);
 
-  return (
-    <ProtectedRoute>
-      <section className="max-w-6xl mx-auto px-4 py-16">
+useEffect(() => {
+if (user?.email) {
+fetchAppointments();
+}
+}, [user]);
 
-        {/* Heading */}
+const filteredAppointments =
+useMemo(() => {
+return appointments.filter(
+(appointment) =>
+appointment?.doctorId?.name
+?.toLowerCase()
+.includes(
+searchTerm.toLowerCase()
+)
+);
+}, [appointments, searchTerm]);
 
-        <div className="text-center mb-12">
-          <h1 className="text-5xl font-bold">
-            My Appointments
-          </h1>
+return ( <ProtectedRoute> <section className="max-w-6xl mx-auto px-4 py-16">
 
-          <p className="mt-4 text-gray-500">
-            Manage your booked appointments.
-          </p>
-        </div>
 
-        {/* Search */}
+    <div className="text-center mb-12">
+      <h1 className="text-5xl font-bold">
+        My Appointments
+      </h1>
 
-        <div className="mb-8">
-          <input
-            type="text"
-            placeholder="Search by doctor name..."
-            value={searchTerm}
-            onChange={(e) =>
-              setSearchTerm(e.target.value)
-            }
-            className="input input-bordered w-full"
-          />
-        </div>
+      <p className="mt-4 text-gray-500">
+        Manage your booked appointments.
+      </p>
+    </div>
 
-        {/* Loading */}
+    <div className="mb-8 flex gap-3">
+      <input
+        type="text"
+        placeholder="Search by doctor name..."
+        value={searchTerm}
+        onChange={(e) =>
+          setSearchTerm(e.target.value)
+        }
+        className="input input-bordered flex-1"
+      />
 
-        {loading ? (
-          <div className="flex justify-center py-20">
-            <span className="loading loading-spinner loading-lg"></span>
-          </div>
-        ) : filteredAppointments.length ===
-          0 ? (
-          <div className="text-center py-20">
-            <h2 className="text-3xl font-semibold">
-              No Appointments Found
-            </h2>
-          </div>
-        ) : (
-          <div className="grid gap-6">
+      <button
+        className="btn btn-primary"
+      >
+        Search
+      </button>
+    </div>
 
-            {filteredAppointments.map(
-              (appointment) => (
-                <div
-                  key={appointment._id}
-                  className="bg-white border rounded-2xl shadow-lg p-6"
+    {loading ? (
+      <div className="flex justify-center py-20">
+        <span className="loading loading-spinner loading-lg"></span>
+      </div>
+    ) : filteredAppointments.length === 0 ? (
+      <div className="text-center py-20">
+        <h2 className="text-3xl font-semibold">
+          No Appointments Found
+        </h2>
+      </div>
+    ) : (
+      <div className="grid gap-6">
+
+        {filteredAppointments.map(
+          (appointment) => (
+            <div
+              key={appointment._id}
+              className="bg-white border rounded-2xl shadow-lg p-6"
+            >
+              <h2 className="text-2xl font-bold text-blue-600">
+                {
+                  appointment
+                    .doctorId?.name
+                }
+              </h2>
+
+              <p className="mt-2">
+                <strong>
+                  Specialty:
+                </strong>{" "}
+                {
+                  appointment
+                    .doctorId
+                    ?.specialty
+                }
+              </p>
+
+              <p>
+                <strong>
+                  Patient Name:
+                </strong>{" "}
+                {
+                  appointment.patientName
+                }
+              </p>
+
+              <p>
+                <strong>
+                  Patient Email:
+                </strong>{" "}
+                {
+                  appointment.patientEmail
+                }
+              </p>
+
+              <p>
+                <strong>
+                  Appointment Time:
+                </strong>{" "}
+                {
+                  appointment.appointmentTime
+                }
+              </p>
+
+              <p>
+                <strong>Status:</strong>{" "}
+                <span className="text-green-600 font-semibold">
+                  {
+                    appointment.status
+                  }
+                </span>
+              </p>
+
+              <div className="flex flex-wrap gap-3 mt-5">
+
+                <button
+                  onClick={() =>
+                    setSelectedAppointment(
+                      appointment
+                    )
+                  }
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg font-semibold transition"
                 >
-                  <h2 className="text-2xl font-bold text-blue-600">
-                    {
-                      appointment
-                        .doctorId?.name
-                    }
-                  </h2>
+                  Update
+                </button>
 
-                  <p className="mt-2">
-                    <strong>
-                      Specialty:
-                    </strong>{" "}
-                    {
-                      appointment
-                        .doctorId
-                        ?.specialty
-                    }
-                  </p>
+                <DeleteButton
+                  appointmentId={
+                    appointment._id
+                  }
+                  onDeleted={() => {
+                    setAppointments(
+                      appointments.filter(
+                        (item) =>
+                          item._id !==
+                          appointment._id
+                      )
+                    );
+                  }}
+                />
 
-                  <p>
-                    <strong>
-                      Patient Name:
-                    </strong>{" "}
-                    {
-                      appointment.patientName
-                    }
-                  </p>
+              </div>
 
-                  <p>
-                    <strong>
-                      Patient Email:
-                    </strong>{" "}
-                    {
-                      appointment.patientEmail
-                    }
-                  </p>
-
-                  <p>
-                    <strong>
-                      Appointment Time:
-                    </strong>{" "}
-                    {
-                      appointment.appointmentTime
-                    }
-                  </p>
-
-                  <p>
-                    <strong>Status:</strong>{" "}
-                    <span className="text-green-600 font-semibold">
-                      {
-                        appointment.status
-                      }
-                    </span>
-                  </p>
-
-                  <div className="flex flex-wrap gap-3 mt-5">
-
-                    <button
-                      onClick={() =>
-                        setSelectedAppointment(
-                          appointment
-                        )
-                      }
-                      className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg font-semibold transition"
-                    >
-                      Update
-                    </button>
-
-                    <DeleteButton
-                      appointmentId={
-                        appointment._id
-                      }
-                      onDeleted={() => {
-                        setAppointments(
-                          appointments.filter(
-                            (item) =>
-                              item._id !==
-                              appointment._id
-                          )
-                        );
-                      }}
-                    />
-
-                  </div>
-                </div>
-              )
-            )}
-
-          </div>
+            </div>
+          )
         )}
 
-        {/* Update Modal */}
+      </div>
+    )}
 
-        {selectedAppointment && (
-          <UpdateAppointmentModal
-            appointment={
-              selectedAppointment
-            }
-            onClose={() =>
-              setSelectedAppointment(
-                null
-              )
-            }
-            onUpdated={(
-              updatedAppointment
-            ) => {
-              setAppointments(
-                appointments.map(
-                  (item) =>
-                    item._id ===
-                    updatedAppointment._id
-                      ? updatedAppointment
-                      : item
-                )
-              );
+    {selectedAppointment && (
+      <UpdateAppointmentModal
+        appointment={
+          selectedAppointment
+        }
+        onClose={() =>
+          setSelectedAppointment(
+            null
+          )
+        }
+        onUpdated={(
+          updatedAppointment
+        ) => {
+          setAppointments(
+            appointments.map(
+              (item) =>
+                item._id ===
+                updatedAppointment._id
+                  ? updatedAppointment
+                  : item
+            )
+          );
 
-              setSelectedAppointment(
-                null
-              );
-            }}
-          />
-        )}
+          setSelectedAppointment(
+            null
+          );
+        }}
+      />
+    )}
 
-      </section>
-    </ProtectedRoute>
-  );
+  </section>
+</ProtectedRoute>
+
+
+);
 }
