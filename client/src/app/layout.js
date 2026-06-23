@@ -1,13 +1,15 @@
 import "./globals.css";
+
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import AuthProvider from "@/providers/AuthProvider";
+
 import { Toaster } from "react-hot-toast";
 
 export const metadata = {
   title: "DocAppoint",
   description:
-    "Doctor Appointment Booking System",
+    "Doctor Appointment Booking Platform",
 };
 
 export default function RootLayout({
@@ -15,18 +17,25 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="bg-slate-50 min-h-screen flex flex-col">
+      <body>
+
         <AuthProvider>
+
           <Navbar />
 
-          <main className="flex-grow">
+          <main className="min-h-screen">
             {children}
           </main>
 
           <Footer />
 
-          <Toaster position="top-right" />
+          <Toaster
+            position="top-right"
+            reverseOrder={false}
+          />
+
         </AuthProvider>
+
       </body>
     </html>
   );
