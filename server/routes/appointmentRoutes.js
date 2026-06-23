@@ -1,14 +1,23 @@
-const verifyToken =
-  require("../middleware/verifyToken");
 const express = require("express");
 const router = express.Router();
 
 const Appointment = require("../models/Appointment");
+const verifyToken = require("../middleware/verifyToken");
+
 
 // GET APPOINTMENTS
-router.get("/", async (req, res) => {
+router.get("/", verifyToken, async (req, res) => {
   try {
     const { email } = req.query;
+
+    if (
+      email &&
+      email !== req.user.email
+    ) {
+      return res.status(403).json({
+        message: "Forbidden Access",
+      });
+    }
 
     let query = {};
 
@@ -31,8 +40,9 @@ router.get("/", async (req, res) => {
   }
 });
 
+
 // CREATE APPOINTMENT
-router.post("/", async (req, res) => {
+router.post("/", verifyToken, async (req, res) => {
   try {
     const appointment =
       await Appointment.create(
@@ -49,8 +59,9 @@ router.post("/", async (req, res) => {
   }
 });
 
+
 // UPDATE APPOINTMENT
-router.put("/:id", async (req, res) => {
+router.put("/:id", verifyToken, async (req, res) => {
   try {
     const updatedAppointment =
       await Appointment.findByIdAndUpdate(
@@ -78,36 +89,9 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-// UPDATE APPOINTMENT
-router.put("/:id", async (req, res) => {
-  try {
-    const updatedAppointment =
-      await Appointment.findByIdAndUpdate(
-        req.params.id,
-        req.body,
-        {
-          new: true,
-        }
-      ).populate("doctorId");
-
-    if (!updatedAppointment) {
-      return res.status(404).json({
-        message: "Appointment not found",
-      });
-    }
-
-    res.status(200).json(
-      updatedAppointment
-    );
-  } catch (error) {
-    res.status(500).json({
-      message: error.message,
-    });
-  }
-});
 
 // DELETE APPOINTMENT
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", verifyToken, async (req, res) => {
   try {
     const deletedAppointment =
       await Appointment.findByIdAndDelete(
