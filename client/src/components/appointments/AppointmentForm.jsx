@@ -3,16 +3,14 @@
 import { useState } from "react";
 import api from "@/services/api";
 import toast from "react-hot-toast";
+import { useAuth } from "@/providers/AuthProvider"; // ✅ যোগ করো
 
-export default function AppointmentForm({
-  doctor,
-}) {
-  const [loading, setLoading] =
-    useState(false);
+export default function AppointmentForm({ doctor }) {
+  const { user } = useAuth(); // ✅ যোগ করো
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     setLoading(true);
 
     const form = e.target;
@@ -20,27 +18,17 @@ export default function AppointmentForm({
     const appointmentData = {
       doctorId: doctor._id,
       patientName: form.name.value,
-      patientEmail: form.email.value,
+      patientEmail: user?.email || form.email.value, // ✅ login এর email নেবে
       appointmentTime: form.time.value,
     };
 
     try {
-      await api.post(
-        "/appointments",
-        appointmentData
-      );
-
-      toast.success(
-        "Appointment booked successfully!"
-      );
-
+      await api.post("/appointments", appointmentData);
+      toast.success("Appointment booked successfully!");
       form.reset();
     } catch (error) {
       console.error(error);
-
-      toast.error(
-        "Failed to book appointment!"
-      );
+      toast.error("Failed to book appointment!");
     }
 
     setLoading(false);
@@ -53,10 +41,7 @@ export default function AppointmentForm({
           Book Appointment
         </h2>
 
-        <form
-          onSubmit={handleSubmit}
-          className="space-y-4"
-        >
+        <form onSubmit={handleSubmit} className="space-y-4">
           <input
             name="name"
             type="text"
@@ -65,11 +50,15 @@ export default function AppointmentForm({
             required
           />
 
+          {/* ✅ login করা থাকলে email auto-fill, readonly */}
           <input
             name="email"
             type="email"
             placeholder="Enter Your Email"
             className="input input-bordered w-full"
+            value={user?.email || ""}
+            readOnly={!!user?.email}
+            onChange={() => {}}
             required
           />
 
@@ -78,30 +67,20 @@ export default function AppointmentForm({
             className="select select-bordered w-full"
             required
           >
-            <option value="">
-              Select Appointment Time
-            </option>
-
-            {doctor.availability?.map(
-              (slot, index) => (
-                <option
-                  key={index}
-                  value={slot}
-                >
-                  {slot}
-                </option>
-              )
-            )}
+            <option value="">Select Appointment Time</option>
+            {doctor.availability?.map((slot, index) => (
+              <option key={index} value={slot}>
+                {slot}
+              </option>
+            ))}
           </select>
 
           <button
-             type="submit"
-             disabled={loading}
-             className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-xl shadow-lg transition duration-300"
->
-              {loading
-              ? "Booking..."
-             : "Confirm Appointment"}
+            type="submit"
+            disabled={loading}
+            className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-xl shadow-lg transition duration-300"
+          >
+            {loading ? "Booking..." : "Confirm Appointment"}
           </button>
         </form>
       </div>
