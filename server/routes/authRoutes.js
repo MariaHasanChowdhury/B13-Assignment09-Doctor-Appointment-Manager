@@ -31,9 +31,10 @@ router.post("/jwt", (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: false, // true হবে যখন HTTPS deploy করবে
+      secure: false,
       sameSite: "lax",
       maxAge: 7 * 24 * 60 * 60 * 1000,
+      // ❌ domain সরানো হয়েছে
     });
 
     return res.status(200).json({
@@ -56,6 +57,7 @@ router.post("/logout", (req, res) => {
     httpOnly: true,
     secure: false,
     sameSite: "lax",
+    
   });
 
   return res.status(200).json({
