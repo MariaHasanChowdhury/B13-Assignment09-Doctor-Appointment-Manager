@@ -4,7 +4,7 @@ import DoctorCard from "@/components/doctors/DoctorCard";
 async function getDoctors() {
   try {
     const res = await axios.get(
-      "http://localhost:5000/api/doctors"
+      `${process.env.NEXT_PUBLIC_API_URL}/doctors`
     );
 
     return res.data;
