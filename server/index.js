@@ -21,7 +21,7 @@ connectDB();
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "https://b13-assignment09-doctor-appointment.vercel.app", 
     credentials: true,
   })
 );
