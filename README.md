@@ -1,7 +1,7 @@
 # 🩺 DocAppoint - Doctor Appointment Manager
 
 ### 🌐 Live Site:
-b13-assignment09-doctor-appointment-manager-cnjr5tssm.vercel.app
+https://b13-assignment09-doctor-appointment.vercel.app/
 
 ### 💻 Client Repository
 https://github.com/MariaHasanChowdhury/B13-Assignment09-Doctor-Appointment-Manager/tree/main/client
